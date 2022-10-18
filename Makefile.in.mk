@@ -21,7 +21,7 @@ endif
 # -----------------------------------------------
 # Paths
 
-DIR_SCRIPTS = $(DIR_REPO)/scripts
+DIR_UTILS = $(DIR_REPO)/utils
 DIR_SRC := $(DIR_REPO)/src
 DIR_TESTS := $(DIR_REPO)/tests
 DIR_DATA := $(DIR_REPO)/data
@@ -29,7 +29,7 @@ DIR_DATA := $(DIR_REPO)/data
 # -----------------------------------------------
 # Virtualenv-depend variables
 
-ifeq ($(shell python "$(DIR_SCRIPTS)/detect_venv.py"), True)
+ifeq ($(shell python "$(DIR_UTILS)/detect_venv.py"), True)
 
 IN_VENV := True
 RUN :=
