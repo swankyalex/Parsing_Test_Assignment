@@ -5,7 +5,7 @@
 #### The task is to collect data from three resources: 
 1. [oriencoop.cl](https://oriencoop.cl/sucursales.htm) 
 2. [som1.ru](https://som1.ru/shops/)
-3. [naturasiberica.ru](https://naturasiberica.ru/our-shops/) - not working since 18/10/2022
+3. [naturasiberica.ru](https://naturasiberica.ru/our-shops/) - site not working since 18/10/2022
 
 #### Resulted scripts for parsing:
 1. [Script 1](https://github.com/swankyalex/Parsing_Test_Assignment/blob/master/src/script1.py)
