@@ -2,7 +2,7 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Any
+from typing import Union
 
 from fake_useragent import UserAgent
 from geopy.geocoders import Nominatim
@@ -55,7 +55,7 @@ def parse_working_hours(morning: str, afternoon: str) -> list[str]:
         return result
 
 
-def get_cords(address: str, api_key: str = None) -> Any[list[float], None]:
+def get_cords(address: str, api_key: str = None) -> Union[list[float], None]:
     """Function for geocoding. Without any API-key it uses OSM geocoder,
     but it doesn't handle all addresses. With API_key (Yandex for example)
     you can get all cords"""
@@ -72,7 +72,7 @@ def get_cords(address: str, api_key: str = None) -> Any[list[float], None]:
 
 
 def get_nums(nums: str) -> list[str]:
-    """Getting correct phone addresses from provided string"""
+    """Getting correct phone numbers from provided string"""
     items_for_replace = ["(", ")", "-", " "]
     for item in items_for_replace:
         nums = nums.replace(item, "")
@@ -86,4 +86,4 @@ def write_data_to_json(data: list[dict], output: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
-    print(f"data written to {path}")
+    print(f"Finished. The data is written to {path}")
