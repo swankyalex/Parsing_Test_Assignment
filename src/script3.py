@@ -1,5 +1,3 @@
-from typing import Any
-
 import requests
 from fake_useragent import UserAgent
 from tqdm import tqdm
@@ -9,15 +7,12 @@ from utils import get_nums
 from utils import write_data_to_json
 
 
-def get_response(url: str, headers: dict[str, Any], params: dict[str, str]):
-    response = requests.post(url=url, headers=headers, data=params).json()
-    return response
-
-
 def parse_data(response):
+    """Parse data from JSON"""
     result_json = []
     for row in tqdm(response["original"]):
         address = f'{row["city"]}, {row["address"]}'.replace("&quot;", "'")
+        # if u have YMaps APIkey, you can put it in the function below to get all cords
         latlon = get_cords(address)
         name = "Natura Siberica"
         phone = row["phone"]
@@ -43,10 +38,13 @@ def main() -> None:
         "user-agent": UserAgent().random,
         "X-Requested-With": "XMLHttpRequest",
     }
-    params = {"type": "all"}
-    response = get_response(url, headers, params)
-    data = parse_data(response)
-    write_data_to_json(data, "task3.json")
+    data = {"type": "all"}
+    try:
+        response = requests.post(url=url, headers=headers, data=data).json()
+        data = parse_data(response)
+        write_data_to_json(data, "task3.json")
+    except requests.exceptions.JSONDecodeError:
+        print("Site is down. Try again later")
 
 
 if __name__ == "__main__":
