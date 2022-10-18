@@ -12,8 +12,8 @@ from utils import write_data_to_json
 class Parser:
     def __init__(self, link):
         self.url = link
-        self.results = []
         self.all_links = []
+        self.data = []
 
     def get_all_links(self):
         """Getting all shop links on the site"""
@@ -60,14 +60,14 @@ class Parser:
                         "phones": phones,
                         "working_hours": working_hours,
                     }
-                    self.results.append(result)
+                    self.data.append(result)
 
     def runner(self):
         print(f"Start parsing data from {self.url}")
         self.get_all_links()
         tasks = [self.parse_data(link) for link in self.all_links]
         asyncio.run(asyncio.wait(tasks))
-        return self.results
+        return self.data
 
 
 def main():
