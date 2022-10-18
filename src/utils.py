@@ -57,7 +57,7 @@ def parse_working_hours(morning: str, afternoon: str) -> list[str]:
 
 def get_cords(address: str, api_key: str = None) -> Union[list[float], None]:
     """Function for geocoding. Without any API-key it uses OSM geocoder,
-    but it doesn't handle all addresses. With API_key (Yandex for example)
+    but it doesn't handle all addresses. With API-key (Yandex for example)
     you can get all cords"""
     try:
         if api_key:

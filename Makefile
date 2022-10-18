@@ -8,18 +8,6 @@ format:
 	$(RUN) black "$(DIR_SRC)"
 
 
-.PHONY: mypy
-mypy:
-	$(call log, mypy is running)
-	$(RUN) mypy "$(DIR_SRC)" noxfile.py
-	$(call log, All good!)
-
-
-.PHONY: format-full
-format-full: format mypy
-	$(call log, code formatted)
-
-
 .PHONY: parse1
 parse1:
 	$(call log, parsing oriencoop.cl)
