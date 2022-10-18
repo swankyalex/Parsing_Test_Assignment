@@ -1,13 +1,23 @@
 import json
 import os
 import re
+from pathlib import Path
+from typing import Any
 
 from fake_useragent import UserAgent
 from geopy.geocoders import Nominatim
 from geopy.geocoders import Yandex
 
+_this_file = Path(__file__).resolve()
 
-def parse_working_hours(morning, afternoon):
+DIR_REPO = _this_file.parent.parent.resolve()
+DATA_PATH = (DIR_REPO / "data").resolve()
+DIR_SCRIPTS = (DIR_REPO / "scripts").resolve()
+DIR_SRC = (DIR_REPO / "src").resolve()
+
+
+def parse_working_hours(morning: str, afternoon: str) -> list[str]:
+    """Reformatting working hours to needed format in the 1st task"""
     morning_start = morning.split()[1].strip().replace(".", ":")
     morning_finish = morning.split()[3].strip().replace(".", ":")
     if "Continuado" in afternoon:
@@ -45,7 +55,10 @@ def parse_working_hours(morning, afternoon):
         return result
 
 
-def get_cords(address, api_key=None):
+def get_cords(address: str, api_key: str = None) -> Any[list[float], None]:
+    """Function for geocoding. Without any API-key it uses OSM geocoder,
+    but it doesn't handle all addresses. With API_key (Yandex for example)
+    you can get all cords"""
     try:
         if api_key:
             geolocator = Yandex(api_key=api_key, user_agent=UserAgent().random)
@@ -58,7 +71,8 @@ def get_cords(address, api_key=None):
         return None
 
 
-def get_nums(nums):
+def get_nums(nums: str) -> list[str]:
+    """Getting correct phone addresses from provided string"""
     items_for_replace = ["(", ")", "-", " "]
     for item in items_for_replace:
         nums = nums.replace(item, "")
@@ -66,9 +80,10 @@ def get_nums(nums):
     return result
 
 
-def write_data_to_json(result, output):
-    path = os.path.join("../data/", output)
+def write_data_to_json(data: list[dict], output: str) -> None:
+    """Writing data to JSON file"""
+    path = os.path.join(DATA_PATH, output)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
-        json.dump(result, file, indent=4, ensure_ascii=False)
+        json.dump(data, file, indent=4, ensure_ascii=False)
     print(f"data written to {path}")
