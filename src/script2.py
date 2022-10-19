@@ -1,4 +1,5 @@
 import asyncio
+import os
 import re
 
 import aiohttp
@@ -71,6 +72,8 @@ class Parser:
         self.get_cities_id()
         print("City indexes received")
         tasks = [self.get_all_links(idx) for idx in self.city_idxs]
+        if os.name == "nt":
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(asyncio.wait(tasks))
         print("All links received")
         tasks2 = [self.parse_data(link) for link in self.all_links]

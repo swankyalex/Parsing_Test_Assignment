@@ -1,4 +1,5 @@
 import asyncio
+import os
 import re
 
 import aiohttp
@@ -66,6 +67,8 @@ class Parser:
         print(f"Start parsing data from {self.url}")
         self.get_all_links()
         tasks = [self.parse_data(link) for link in self.all_links]
+        if os.name == "nt":
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(asyncio.wait(tasks))
         return self.data
 
