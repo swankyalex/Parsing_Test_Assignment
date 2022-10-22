@@ -47,7 +47,7 @@ class Parser:
             "latlon": latlon,
             "name": name,
             "phones": phones,
-            "working_hours": hours,
+            "working_hours": [hours],
         }
         self.json.append(result)
 
