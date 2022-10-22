@@ -1,19 +1,38 @@
+import asyncio
+import os
+
 import requests
 from fake_useragent import UserAgent
-from tqdm import tqdm
 
 from utils import get_cords
 from utils import get_nums
 from utils import write_data_to_json
 
 
-def parse_data(response):
-    """Parse data from JSON"""
-    result_json = []
-    for row in tqdm(response["original"]):
+class Parser:
+    def __init__(self, link, api_key=None):
+        self.rows = None
+        self.api_key = api_key
+        self.url = link
+        self.headers = {
+            "user-agent": UserAgent().random,
+            "X-Requested-With": "XMLHttpRequest",
+        }
+        self.data = {"type": "all"}
+        self.json = []
+
+    def get_rows(self):
+        response = requests.post(
+            url=self.url, headers=self.headers, data=self.data
+        ).json()
+        self.rows = [row for row in response["original"]]
+
+    async def parse_data(self, row):
+        """Parse data from JSON"""
         address = f'{row["city"]}, {row["address"]}'.replace("&quot;", "'")
         # if u have YMaps APIkey, you can put it in the function below to get all cords
-        latlon = get_cords(address)
+
+        latlon = await get_cords(address, self.api_key)
         name = "Natura Siberica"
         phone = row["phone"]
         if phone:
@@ -28,23 +47,25 @@ def parse_data(response):
             "phones": phones,
             "working_hours": hours,
         }
-        result_json.append(result)
-    return result_json
+        self.json.append(result)
+
+    def runner(self):
+        print(f"Start parsing data from {self.url}")
+        self.get_rows()
+        if not self.api_key:
+            print("Using OSM geocoder (without api key). Speed - 1 request/sec only")
+        tasks = [self.parse_data(row) for row in self.rows]
+        if os.name == "nt":
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+        asyncio.run(asyncio.wait(tasks))
+        return self.json
 
 
 def main() -> None:
     url = "https://naturasiberica.ru/local/php_interface/ajax/getShopsData.php"
-    headers = {
-        "user-agent": UserAgent().random,
-        "X-Requested-With": "XMLHttpRequest",
-    }
-    data = {"type": "all"}
-    try:
-        response = requests.post(url=url, headers=headers, data=data).json()
-        data = parse_data(response)
-        write_data_to_json(data, "task3.json")
-    except requests.exceptions.JSONDecodeError:
-        print("Site is down. Try again later")
+    parser = Parser(url)
+    data = parser.runner()
+    write_data_to_json(data, "task3.json")
 
 
 if __name__ == "__main__":

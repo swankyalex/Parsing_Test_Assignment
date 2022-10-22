@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Union
 
 from fake_useragent import UserAgent
+from geopy.adapters import AioHTTPAdapter
 from geopy.geocoders import Nominatim
 from geopy.geocoders import Yandex
 
@@ -55,20 +56,29 @@ def parse_working_hours(morning: str, afternoon: str) -> list[str]:
         return result
 
 
-def get_cords(address: str, api_key: str = None) -> Union[list[float], None]:
+async def get_cords(address: str, api_key: str = None) -> Union[list[float], None]:
     """Function for geocoding. Without any API-key it uses OSM geocoder,
     but it doesn't handle all addresses. With API-key (Yandex for example)
     you can get all cords"""
-    try:
-        if api_key:
-            geolocator = Yandex(api_key=api_key, user_agent=UserAgent().random)
-        else:
+    if api_key:
+        async with Yandex(
+            api_key=api_key,
+            user_agent=UserAgent().random,
+            adapter_factory=AioHTTPAdapter,
+        ) as geolocator:
+            location = await geolocator.geocode(address)
+            lat, lon = location.latitude, location.longitude
+            return [lat, lon]
+
+    else:
+        try:
             geolocator = Nominatim(user_agent=UserAgent().random)
-        location = geolocator.geocode(address)
-        lat, lon = location.latitude, location.longitude
-        return [lat, lon]
-    except:
-        return None
+            location = geolocator.geocode(address)
+            lat, lon = location.latitude, location.longitude
+            print(f"OSM cords got - {address}")
+            return [lat, lon]
+        except AttributeError:
+            return None
 
 
 def get_nums(nums: str) -> list[str]:
