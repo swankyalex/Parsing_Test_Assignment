@@ -76,7 +76,7 @@ async def get_cords(address: str, api_key: str = None) -> Union[list[float], Non
             geolocator = Nominatim(user_agent=UserAgent().random)
             location = geolocator.geocode(address)
             lat, lon = location.latitude, location.longitude
-            print(f"OSM cords got - {address}")
+            print(f"OSM successfully decoded - {address}")
             return [lat, lon]
         except AttributeError:
             return None

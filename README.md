@@ -41,8 +41,18 @@ make parse1 #parse2/parse3
 make parse-all #to parse all resources sequentially
 ```
 **The data in JSON format will be saved to the folder *data* in root directory**
-
-5. If you installed dev dependencies you also can automatically format code with one
+5. Also CSV format supported. Just add the option *-o csv*:
+```sh
+pipenv run python src/script1.py -o csv #or script2.py -o csv/script3.py -o csv
+```
+```sh
+make parse1-csv #parse2-csv/parse3-csv
+```
+```sh
+make parse-all-csv #to parse all resources sequentially
+```
+**The data in CSV format will be saved to the folder *data* in root directory**
+6. If you installed dev dependencies you also can automatically format code with one
 of the following commands:
 ```sh
 make format #run black and isort sequentially

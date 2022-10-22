@@ -28,7 +28,6 @@ parse3:
 
 .PHONY: parse-all
 parse-all: parse1 parse2 parse3
-	$(call log, parsing all sites)
 
 
 .PHONY: parse1-csv
@@ -51,7 +50,6 @@ parse3-csv:
 
 .PHONY: parse-all-csv
 parse-all-csv: parse1-csv parse2-csv parse3-csv
-	$(call log, parsing all sites)
 
 
 .PHONY: venv
