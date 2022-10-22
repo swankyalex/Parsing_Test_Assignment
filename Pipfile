@@ -13,6 +13,7 @@ geopy = "*"
 simplejson = "*"
 fake-useragent = "*"
 aiohttp = "*"
+click = "*"
 
 [dev-packages]
 black = "*"

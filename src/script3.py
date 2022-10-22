@@ -1,11 +1,13 @@
 import asyncio
 import os
 
+import click
 import requests
 from fake_useragent import UserAgent
 
 from utils import get_cords
 from utils import get_nums
+from utils import write_data_to_csv
 from utils import write_data_to_json
 
 
@@ -61,11 +63,24 @@ class Parser:
         return self.json
 
 
-def main() -> None:
+@click.command()
+@click.option(
+    "-o",
+    "--output",
+    default="json",
+    type=click.Choice(["json", "csv"]),
+    help=f"Choose processing type",
+    show_default=True,
+)
+def main(output: str) -> None:
     url = "https://naturasiberica.ru/local/php_interface/ajax/getShopsData.php"
-    parser = Parser(url)
+    api_key = None  # you can provide your YM api key here
+    parser = Parser(url, api_key)
     data = parser.runner()
-    write_data_to_json(data, "task3.json")
+    if output == "csv":
+        write_data_to_csv(data, "task3.csv")
+    else:
+        write_data_to_json(data, "task3.json")
 
 
 if __name__ == "__main__":

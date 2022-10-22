@@ -31,6 +31,29 @@ parse-all: parse1 parse2 parse3
 	$(call log, parsing all sites)
 
 
+.PHONY: parse1-csv
+parse1-csv:
+	$(call log, parsing oriencoop.cl)
+	$(PYTHON) src/script1.py -o csv
+
+
+.PHONY: parse2-csv
+parse2-csv:
+	$(call log, parsing https://www.som1.ru/shops)
+	$(PYTHON) src/script2.py -o csv
+
+
+.PHONY: parse3-csv
+parse3-csv:
+	$(call log, parsing https://naturasiberica.ru)
+	$(PYTHON) src/script3.py -o csv
+
+
+.PHONY: parse-all-csv
+parse-all-csv: parse1-csv parse2-csv parse3-csv
+	$(call log, parsing all sites)
+
+
 .PHONY: venv
 venv:
 	$(call log, installing packages)

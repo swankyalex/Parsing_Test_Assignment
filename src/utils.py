@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 import re
@@ -96,4 +97,16 @@ def write_data_to_json(data: list[dict], output: str) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
+    print(f"Finished. The data is written to {path}")
+
+
+def write_data_to_csv(data: list[dict], output: str) -> None:
+    """Writing data to csv file"""
+    path = os.path.join(DATA_PATH, output)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f, delimiter=";")
+        writer.writerow(data[0].keys())
+        for row in data:
+            writer.writerow(row.values())
     print(f"Finished. The data is written to {path}")
