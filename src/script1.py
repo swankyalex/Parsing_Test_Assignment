@@ -3,10 +3,12 @@ import os
 import re
 
 import aiohttp
+import click
 import requests
 from bs4 import BeautifulSoup
 
 from utils import parse_working_hours
+from utils import write_data_to_csv
 from utils import write_data_to_json
 
 
@@ -73,11 +75,23 @@ class Parser:
         return self.data
 
 
-def main():
+@click.command()
+@click.option(
+    "-o",
+    "--output",
+    default="json",
+    type=click.Choice(["json", "csv"]),
+    help=f"Choose processing type",
+    show_default=True,
+)
+def main(output: str):
     url = "https://oriencoop.cl/sucursales.htm"
     parser = Parser(url)
     data = parser.runner()
-    write_data_to_json(data, "task1.json")
+    if output == "csv":
+        write_data_to_csv(data, "task1.csv")
+    else:
+        write_data_to_json(data, "task1.json")
 
 
 if __name__ == "__main__":

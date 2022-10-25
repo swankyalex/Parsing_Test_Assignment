@@ -3,11 +3,13 @@ import os
 import re
 
 import aiohttp
+import click
 import requests
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 
 from utils import get_nums
+from utils import write_data_to_csv
 from utils import write_data_to_json
 
 
@@ -81,11 +83,22 @@ class Parser:
         return self.data
 
 
-def main() -> None:
+@click.command()
+@click.option(
+    "-o",
+    "--output",
+    default="json",
+    type=click.Choice(["json", "csv"]),
+    help=f"Choose processing type",
+    show_default=True,
+)
+def main(output: str) -> None:
     url = "https://www.som1.ru/shops/"
     parser = Parser(url)
     data = parser.runner()
-    write_data_to_json(data, "task2.json")
+    write_data_to_json(data, "task2.json") if output == "json" else write_data_to_csv(
+        data, "task2.csv"
+    )
 
 
 if __name__ == "__main__":

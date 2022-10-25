@@ -1,5 +1,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+## This branch is just only a personal finalization of the task after the deadline. For checking my work - see the master branch
+
 ### Test Assignment for Junior Python Developer position.
 
 #### The task is to collect data from three resources: 
@@ -18,18 +20,13 @@ This package allows you to parse data from all links provided above
 2. Make sure Python 3.9 and [Pipenv](https://pipenv.pypa.io/en/latest/) (requirements.txt also provided) are installed on your machine.
 3. Install the project dependencies (*run of the following commands in a terminal, from the root of a cloned repository*):
 ```sh
-pipenv install
+pipenv install / pipenv install --dev #to install with dev-packages (black, isort)
 ```
-```sh
-pipenv install --dev  #to install with dev-packages (black, isort)
-``` 
 or if you have [Make](https://www.gnu.org/software/make/) util
 ```sh
-make venv
+make venv / make venv-dev #to install with dev-packages (black, isort)
 ```
-```sh
-make venv-dev #to install with dev-packages (black, isort)
-```
+
 4. Run script with one of the following commands:
 ```sh
 pipenv run python src/script1.py #or script2.py/script3.py 
@@ -42,7 +39,19 @@ make parse-all #to parse all resources sequentially
 ```
 **The data in JSON format will be saved to the folder *data* in root directory**
 
-5. If you installed dev dependencies you also can automatically format code with one
+5. Also CSV format supported. Just add the option *-o csv*:
+```sh
+pipenv run python src/script1.py -o csv #or script2.py -o csv/script3.py -o csv
+```
+```sh
+make parse1-csv #parse2-csv/parse3-csv
+```
+```sh
+make parse-all-csv #to parse all resources sequentially
+```
+**The data in CSV format will be saved to the folder *data* in root directory**
+
+6. If you installed dev dependencies you also can automatically format code with one
 of the following commands:
 ```sh
 make format #run black and isort sequentially
