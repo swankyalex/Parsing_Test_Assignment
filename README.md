@@ -1,7 +1,5 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## This branch is just only a personal finalization of the task after the deadline. For checking my work - see the master branch
-
 ### Test Assignment for Junior Python Developer position.
 
 #### The task is to collect data from three resources: 
