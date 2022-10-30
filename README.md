@@ -1,7 +1,5 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-### Test Assignment for Junior Python Developer position.
-
 #### The task is to collect data from three resources: 
 1. [oriencoop.cl](https://oriencoop.cl/sucursales.htm) 
 2. [som1.ru](https://som1.ru/shops/)
